@@ -4,13 +4,13 @@ import { motion } from 'framer-motion'
 import { PageHeader } from '../components/layout/PageHeader'
 import { EmptyState } from '../components/ui/EmptyState'
 import { StatusBadge } from '../components/ui/StatusBadge'
+import { ChipTabs } from '../components/ui/ChipTabs'
 import { OrderDetailDrawer } from '../components/orders/OrderDetailDrawer'
 import { useOrdersStore } from '../store/useOrdersStore'
 import { usePrintStore } from '../store/usePrintStore'
 import { formatCurrency, formatTime, orderNumberLabel } from '../lib/format'
 import { matchesDateFilter, type DateFilter } from '../lib/orderFilters'
 import { PAYMENT_LABELS, STATUS_LABELS, type OrderStatus } from '../types'
-import { cn } from '../lib/cn'
 
 const DATE_OPTIONS: { value: DateFilter; label: string }[] = [
   { value: 'hoje', label: 'Hoje' },
@@ -69,42 +69,21 @@ export function OrdersHistoryPage() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Filtrar por período">
-            {DATE_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                role="tab"
-                aria-selected={dateFilter === opt.value}
-                onClick={() => setDateFilter(opt.value)}
-                className={cn(
-                  'rounded-full px-3 py-1.5 text-xs font-medium transition-colors',
-                  dateFilter === opt.value
-                    ? 'bg-gold-500 text-[#1a1310]'
-                    : 'bg-surface-raised text-cream-dim hover:bg-surface-hover hover:text-cream',
-                )}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Filtrar por status">
-            {STATUS_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                role="tab"
-                aria-selected={statusFilter === opt.value}
-                onClick={() => setStatusFilter(opt.value)}
-                className={cn(
-                  'rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
-                  statusFilter === opt.value
-                    ? 'border-gold-500 bg-gold-500/10 text-gold-300'
-                    : 'border-border bg-transparent text-cream-dim hover:bg-surface-hover hover:text-cream',
-                )}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+          <ChipTabs
+            groupId="orders-date"
+            ariaLabel="Filtrar por período"
+            options={DATE_OPTIONS}
+            value={dateFilter}
+            onChange={setDateFilter}
+          />
+          <ChipTabs
+            groupId="orders-status"
+            ariaLabel="Filtrar por status"
+            variant="outline"
+            options={STATUS_OPTIONS}
+            value={statusFilter}
+            onChange={setStatusFilter}
+          />
         </div>
       </div>
 
@@ -152,7 +131,9 @@ export function OrdersHistoryPage() {
                     <StatusBadge status={order.status} />
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9, rotate: -8 }}
                       onClick={(e) => {
                         e.stopPropagation()
                         requestPrint(order)
@@ -161,7 +142,7 @@ export function OrdersHistoryPage() {
                       className="rounded-md p-1.5 text-muted hover:bg-surface-hover hover:text-gold-400"
                     >
                       <Printer size={15} />
-                    </button>
+                    </motion.button>
                   </td>
                 </motion.tr>
               ))}

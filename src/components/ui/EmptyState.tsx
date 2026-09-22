@@ -14,7 +14,8 @@ export function EmptyState({ icon: Icon, title, description, action }: EmptyStat
     <div role="status" className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
+        animate={{ opacity: 1, scale: 1, y: [0, -5, 0] }}
+        transition={{ y: { duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 } }}
         className="flex h-14 w-14 items-center justify-center rounded-full bg-surface-raised text-gold-400"
       >
         <Icon size={26} strokeWidth={1.6} />

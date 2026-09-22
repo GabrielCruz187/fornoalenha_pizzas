@@ -61,11 +61,60 @@ html {
   color-scheme: dark;
 }
 
+/* ---- Light theme ----
+   Overrides the same custom properties @theme declared on :root, so every
+   utility class that already exists (bg-bg, text-cream, text-gold-400, ...)
+   repaints automatically — no component changes needed. */
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-bg: #f7f1e3;
+  --color-bg-soft: #f1e8d3;
+  --color-surface: #fffcf5;
+  --color-surface-raised: #f8f0dc;
+  --color-surface-hover: #efe3c7;
+  --color-border: #e4d7b8;
+  --color-border-strong: #cbb98d;
+
+  --color-gold-100: #f6e8c8;
+  --color-gold-200: #e2c288;
+  --color-gold-300: #96701f;
+  --color-gold-400: #96701f;
+  --color-gold-500: #86641c;
+  --color-gold-600: #6e4f13;
+  --color-gold-700: #4f3a0f;
+  --color-gold-800: #3a2a0b;
+  --color-gold-900: #241a07;
+
+  --color-ember-300: #b85a28;
+  --color-ember-400: #a34f1f;
+  --color-ember-500: #8f4419;
+  --color-ember-600: #6b3512;
+  --color-ember-700: #522a0e;
+
+  --color-cream: #241c14;
+  --color-cream-dim: #4a3c2c;
+  --color-muted: #6b5d4a;
+  --color-muted-dim: #9c8c71;
+
+  --color-status-new: #1c5ea8;
+  --color-status-new-bg: #e5eefb;
+  --color-status-printed: #1d7a44;
+  --color-status-printed-bg: #e3f3e8;
+  --color-status-error: #c53b34;
+  --color-status-error-bg: #fbe7e5;
+  --color-status-done: #5b4bb0;
+  --color-status-done-bg: #ece9fa;
+  --color-status-cancelled: #6b5d4d;
+  --color-status-cancelled-bg: #ece7e0;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-cream);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {

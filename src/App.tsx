@@ -1,5 +1,6 @@
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
+import { ThemeEffect } from './components/layout/ThemeEffect'
 import { PrintPortal } from './components/receipt/PrintPortal'
 import { ToastViewport } from './components/ui/ToastViewport'
 import { NewOrderPage } from './pages/NewOrderPage'
@@ -11,6 +12,7 @@ import { CashClosingPage } from './pages/CashClosingPage'
 function App() {
   return (
     <>
+      <ThemeEffect />
       <PrintPortal />
       <HashRouter>
         <Routes>

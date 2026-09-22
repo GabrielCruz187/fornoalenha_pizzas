@@ -1,15 +1,16 @@
 import { DollarSign, Receipt, ShoppingBag, XCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useMemo, useState } from 'react'
 import { PageHeader } from '../components/layout/PageHeader'
 import { StatTile } from '../components/dashboard/StatTile'
 import { PaymentBreakdownChart } from '../components/dashboard/PaymentBreakdownChart'
 import { TopProductsChart } from '../components/dashboard/TopProductsChart'
 import { OrdersTrendChart } from '../components/dashboard/OrdersTrendChart'
+import { ChipTabs } from '../components/ui/ChipTabs'
 import { useOrdersStore } from '../store/useOrdersStore'
 import { matchesDateFilter, type DateFilter } from '../lib/orderFilters'
 import { computeKpis, computeOrdersPerDay, computePaymentBreakdown, computeTopProducts } from '../lib/dashboardStats'
 import { formatCurrency } from '../lib/format'
-import { cn } from '../lib/cn'
 
 const PERIOD_OPTIONS: { value: DateFilter; label: string; days: number }[] = [
   { value: 'hoje', label: 'Hoje', days: 1 },
@@ -42,54 +43,56 @@ export function DashboardPage() {
         title="Dashboard"
         subtitle="Visão geral do movimento"
         actions={
-          <div className="flex gap-1.5" role="tablist" aria-label="Período">
-            {PERIOD_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                role="tab"
-                aria-selected={period === opt.value}
-                onClick={() => setPeriod(opt.value)}
-                className={cn(
-                  'rounded-full px-3 py-1.5 text-xs font-medium transition-colors',
-                  period === opt.value
-                    ? 'bg-gold-500 text-[#1a1310]'
-                    : 'bg-surface-raised text-cream-dim hover:bg-surface-hover hover:text-cream',
-                )}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
+          <ChipTabs groupId="dashboard-period" ariaLabel="Período" options={PERIOD_OPTIONS} value={period} onChange={setPeriod} />
         }
       />
 
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatTile label="Pedidos" value={String(kpis.totalOrders)} icon={ShoppingBag} />
-        <StatTile label="Faturamento" value={formatCurrency(kpis.revenue)} icon={DollarSign} />
-        <StatTile label="Ticket médio" value={formatCurrency(kpis.averageTicket)} icon={Receipt} />
-        <StatTile
-          label="Cancelados"
-          value={String(kpis.cancelled)}
-          icon={XCircle}
-          sub={kpis.cancelled > 0 ? 'não contam no faturamento' : undefined}
-        />
+        {[
+          { label: 'Pedidos', value: String(kpis.totalOrders), icon: ShoppingBag },
+          { label: 'Faturamento', value: formatCurrency(kpis.revenue), icon: DollarSign },
+          { label: 'Ticket médio', value: formatCurrency(kpis.averageTicket), icon: Receipt },
+          {
+            label: 'Cancelados',
+            value: String(kpis.cancelled),
+            icon: XCircle,
+            sub: kpis.cancelled > 0 ? 'não contam no faturamento' : undefined,
+          },
+        ].map((tile, i) => (
+          <StatTile key={tile.label} {...tile} delay={i * 0.05} />
+        ))}
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-border bg-surface p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="rounded-xl border border-border bg-surface p-4"
+        >
           <h2 className="mb-3 text-sm font-semibold text-cream">Faturamento por forma de pagamento</h2>
           <PaymentBreakdownChart data={paymentData} />
-        </div>
-        <div className="rounded-xl border border-border bg-surface p-4">
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl border border-border bg-surface p-4"
+        >
           <h2 className="mb-3 text-sm font-semibold text-cream">Produtos mais pedidos</h2>
           <TopProductsChart data={topProducts} />
-        </div>
+        </motion.div>
       </div>
 
-      <div className="mt-4 rounded-xl border border-border bg-surface p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25 }}
+        className="mt-4 rounded-xl border border-border bg-surface p-4"
+      >
         <h2 className="mb-3 text-sm font-semibold text-cream">Pedidos por dia</h2>
         <OrdersTrendChart data={trendData.map((d) => ({ label: d.label, count: d.count }))} />
-      </div>
+      </motion.div>
     </div>
   )
 }

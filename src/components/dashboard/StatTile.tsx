@@ -6,17 +6,21 @@ export function StatTile({
   value,
   sub,
   icon: Icon,
+  delay = 0,
 }: {
   label: string
   value: string
   sub?: string
   icon: LucideIcon
+  delay?: number
 }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-border bg-surface p-4"
+      transition={{ delay, duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ y: -2 }}
+      className="rounded-xl border border-border bg-surface p-4 transition-colors hover:border-gold-500/40"
     >
       <div className="mb-2 flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wide text-muted">{label}</span>

@@ -1,4 +1,5 @@
 import { Printer } from 'lucide-react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { type ReactNode, useMemo, useState } from 'react'
 import { PageHeader } from '../components/layout/PageHeader'
 import { ProductPicker } from '../components/order/ProductPicker'
@@ -182,7 +183,17 @@ export function NewOrderPage() {
             </div>
             <div className="mt-2 flex items-center justify-between border-t border-border pt-2">
               <span className="font-display text-base font-semibold text-cream">Total</span>
-              <span className="font-display text-xl font-bold text-gold-400">{formatCurrency(total)}</span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={total}
+                  initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.18 }}
+                  className="font-display text-xl font-bold text-gold-400"
+                >
+                  {formatCurrency(total)}
+                </motion.span>
+              </AnimatePresence>
             </div>
             <Button
               size="lg"

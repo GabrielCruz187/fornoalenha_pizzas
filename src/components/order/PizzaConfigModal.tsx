@@ -108,7 +108,7 @@ export function PizzaConfigModal({ product, onClose, onConfirm }: PizzaConfigMod
             type="checkbox"
             checked={border}
             onChange={(e) => setBorder(e.target.checked)}
-            className="h-4 w-4 accent-[#c9a15b]"
+            className="h-4 w-4 accent-gold-500"
           />
         </label>
 
@@ -121,7 +121,7 @@ export function PizzaConfigModal({ product, onClose, onConfirm }: PizzaConfigMod
               setHalfHalf(e.target.checked)
               if (!e.target.checked) setSecondFlavorId('')
             }}
-            className="h-4 w-4 accent-[#c9a15b]"
+            className="h-4 w-4 accent-gold-500"
           />
         </label>
 

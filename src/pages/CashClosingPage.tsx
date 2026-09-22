@@ -7,7 +7,7 @@ import { useOrdersStore } from '../store/useOrdersStore'
 import { usePrintStore } from '../store/usePrintStore'
 import { computeKpis, computePaymentBreakdown, type CashClosingData } from '../lib/dashboardStats'
 import { formatCurrency } from '../lib/format'
-import { PAYMENT_COLORS } from '../lib/chartColors'
+import { useChartPalette } from '../lib/chartColors'
 
 function todayInputValue() {
   const d = new Date()
@@ -17,6 +17,7 @@ function todayInputValue() {
 export function CashClosingPage() {
   const orders = useOrdersStore((s) => s.orders)
   const requestCashClosingPrint = usePrintStore((s) => s.requestCashClosingPrint)
+  const palette = useChartPalette()
   const [dateValue, setDateValue] = useState(todayInputValue())
 
   const dayOrders = useMemo(() => {
@@ -70,10 +71,10 @@ export function CashClosingPage() {
       <p className="mb-4 text-sm capitalize text-muted">{dateLabel}</p>
 
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatTile label="Pedidos válidos" value={String(kpis.totalOrders)} icon={Receipt} />
-        <StatTile label="Faturamento" value={formatCurrency(kpis.revenue)} icon={DollarSign} />
-        <StatTile label="Ticket médio" value={formatCurrency(kpis.averageTicket)} icon={Receipt} />
-        <StatTile label="Cancelados" value={String(kpis.cancelled)} icon={XCircle} />
+        <StatTile label="Pedidos válidos" value={String(kpis.totalOrders)} icon={Receipt} delay={0} />
+        <StatTile label="Faturamento" value={formatCurrency(kpis.revenue)} icon={DollarSign} delay={0.05} />
+        <StatTile label="Ticket médio" value={formatCurrency(kpis.averageTicket)} icon={Receipt} delay={0.1} />
+        <StatTile label="Cancelados" value={String(kpis.cancelled)} icon={XCircle} delay={0.15} />
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-border">
@@ -92,7 +93,7 @@ export function CashClosingPage() {
                   <span className="inline-flex items-center gap-2 text-cream-dim">
                     <span
                       className="h-2.5 w-2.5 rounded-full"
-                      style={{ background: PAYMENT_COLORS[p.method] }}
+                      style={{ background: palette.paymentColors[p.method] }}
                       aria-hidden
                     />
                     {p.label}

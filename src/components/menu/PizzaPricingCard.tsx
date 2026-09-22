@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { Pizza } from 'lucide-react'
 import { useProductsStore } from '../../store/useProductsStore'
 import { TextField } from '../ui/FormControls'
@@ -28,7 +29,12 @@ export function PizzaPricingCard() {
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-gold-700/40 bg-surface-raised p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25 }}
+      className="mb-6 rounded-xl border border-gold-700/40 bg-surface-raised p-4"
+    >
       <div className="mb-3 flex items-center gap-2">
         <Pizza size={16} className="text-gold-400" />
         <h2 className="text-sm font-semibold text-cream">Tabela de preços das pizzas</h2>
@@ -43,6 +49,6 @@ export function PizzaPricingCard() {
       <Button size="sm" className="mt-3" onClick={handleSave}>
         Salvar preços
       </Button>
-    </div>
+    </motion.div>
   )
 }

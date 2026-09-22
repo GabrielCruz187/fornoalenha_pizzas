@@ -2,6 +2,7 @@ import { Flame } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useOrdersStore } from '../../store/useOrdersStore'
 import { isSameDay } from '../../lib/format'
+import { ThemeToggle } from './ThemeToggle'
 
 export function Topbar() {
   const [now, setNow] = useState(new Date())
@@ -33,6 +34,7 @@ export function Topbar() {
             {now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })}
           </div>
         </div>
+        <ThemeToggle />
       </div>
     </header>
   )

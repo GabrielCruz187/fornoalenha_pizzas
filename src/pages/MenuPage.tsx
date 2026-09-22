@@ -1,4 +1,5 @@
 import { Pencil, Plus, Trash2 } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useMemo, useState } from 'react'
 import { PageHeader } from '../components/layout/PageHeader'
 import { Button } from '../components/ui/Button'
@@ -48,15 +49,20 @@ export function MenuPage() {
       <PizzaPricingCard />
 
       <div className="flex flex-col gap-6">
-        {grouped.map(({ category, items }) => (
-          <section key={category}>
+        {grouped.map(({ category, items }, sectionIdx) => (
+          <motion.section
+            key={category}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: Math.min(sectionIdx, 5) * 0.05, duration: 0.25 }}
+          >
             <h2 className="mb-2 font-display text-base font-semibold text-cream">{CATEGORY_LABELS[category]}</h2>
             <div className="overflow-hidden rounded-xl border border-border">
               {items.map((product, idx) => (
                 <div
                   key={product.id}
                   className={cn(
-                    'flex items-center justify-between gap-3 bg-surface px-4 py-3',
+                    'flex items-center justify-between gap-3 bg-surface px-4 py-3 transition-colors hover:bg-surface-hover',
                     idx !== items.length - 1 && 'border-b border-border',
                     !product.active && 'opacity-50',
                   )}
@@ -75,7 +81,7 @@ export function MenuPage() {
                       type="checkbox"
                       checked={product.active}
                       onChange={() => toggleActive(product.id)}
-                      className="h-3.5 w-3.5 accent-[#c9a15b]"
+                      className="h-3.5 w-3.5 accent-gold-500"
                     />
                     Ativo
                   </label>
@@ -101,7 +107,7 @@ export function MenuPage() {
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
         ))}
       </div>
 

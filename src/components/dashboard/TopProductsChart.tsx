@@ -1,5 +1,5 @@
 import { Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { SEQUENTIAL_HUE, CHART_INK } from '../../lib/chartColors'
+import { useChartPalette } from '../../lib/chartColors'
 
 interface DataPoint {
   name: string
@@ -7,6 +7,8 @@ interface DataPoint {
 }
 
 export function TopProductsChart({ data }: { data: DataPoint[] }) {
+  const palette = useChartPalette()
+
   if (data.length === 0) {
     return <p className="py-8 text-center text-xs text-muted">Nenhum item vendido no período selecionado.</p>
   }
@@ -15,28 +17,15 @@ export function TopProductsChart({ data }: { data: DataPoint[] }) {
     <ResponsiveContainer width="100%" height={Math.max(180, data.length * 34)}>
       <BarChart data={data} layout="vertical" margin={{ top: 4, right: 28, bottom: 4, left: 4 }}>
         <XAxis type="number" hide />
-        <YAxis
-          type="category"
-          dataKey="name"
-          width={170}
-          tickLine={false}
-          axisLine={false}
-          tick={{ fill: CHART_INK.secondary, fontSize: 12 }}
-        />
+        <YAxis type="category" dataKey="name" width={170} tickLine={false} axisLine={false} tick={palette.axisTick} />
         <Tooltip
-          cursor={{ fill: 'rgba(255,255,255,0.04)' }}
-          contentStyle={{
-            background: '#261f1a',
-            border: '1px solid #382e25',
-            borderRadius: 8,
-            fontSize: 12,
-            color: '#f5ecd9',
-          }}
+          cursor={{ fill: palette.cursorFill }}
+          contentStyle={palette.tooltipStyle}
           formatter={(value) => [`${Number(value)} unid.`, '']}
           labelFormatter={(label) => label}
         />
-        <Bar dataKey="quantity" fill={SEQUENTIAL_HUE} radius={[0, 4, 4, 0]} maxBarSize={18}>
-          <LabelList dataKey="quantity" position="right" style={{ fill: '#d9cbb2', fontSize: 12, fontWeight: 500 }} />
+        <Bar dataKey="quantity" fill={palette.sequentialHue} radius={[0, 4, 4, 0]} maxBarSize={18}>
+          <LabelList dataKey="quantity" position="right" style={palette.labelStyle} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>

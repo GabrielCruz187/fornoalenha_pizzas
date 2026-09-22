@@ -1,20 +1,23 @@
-import { Search } from 'lucide-react'
+import { Check, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useProductsStore } from '../../store/useProductsStore'
 import { CATEGORY_LABELS, CATEGORY_ORDER, type Product, type ProductCategory } from '../../types'
 import { productPriceLabel } from '../../lib/priceLabel'
-import { cn } from '../../lib/cn'
-import { motion } from 'framer-motion'
+import { ChipTabs } from '../ui/ChipTabs'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface ProductPickerProps {
   onSelect: (product: Product) => void
 }
 
+const CATEGORY_OPTIONS = CATEGORY_ORDER.map((cat) => ({ value: cat, label: CATEGORY_LABELS[cat] }))
+
 export function ProductPicker({ onSelect }: ProductPickerProps) {
   const products = useProductsStore((s) => s.products)
   const pizzaPricing = useProductsStore((s) => s.pizzaPricing)
-  const [category, setCategory] = useState<ProductCategory | 'todas'>('pizza_salgada')
+  const [category, setCategory] = useState<ProductCategory>('pizza_salgada')
   const [query, setQuery] = useState('')
+  const [justAdded, setJustAdded] = useState<string | null>(null)
 
   const active = useMemo(() => products.filter((p) => p.active), [products])
 
@@ -22,7 +25,7 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
     const q = query.trim().toLowerCase()
     return active.filter((p) => {
       const matchesQuery = q ? p.name.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q) : true
-      const matchesCategory = q ? true : category === 'todas' || p.category === category
+      const matchesCategory = q ? true : p.category === category
       return matchesQuery && matchesCategory
     })
   }, [active, category, query])
@@ -41,23 +44,14 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
       </div>
 
       {!query && (
-        <div className="mb-4 flex flex-wrap gap-1.5" role="tablist" aria-label="Categorias do cardápio">
-          {CATEGORY_ORDER.map((cat) => (
-            <button
-              key={cat}
-              role="tab"
-              aria-selected={category === cat}
-              onClick={() => setCategory(cat)}
-              className={cn(
-                'rounded-full px-3 py-1.5 text-xs font-medium transition-colors',
-                category === cat
-                  ? 'bg-gold-500 text-[#1a1310]'
-                  : 'bg-surface-raised text-cream-dim hover:bg-surface-hover hover:text-cream',
-              )}
-            >
-              {CATEGORY_LABELS[cat]}
-            </button>
-          ))}
+        <div className="mb-4">
+          <ChipTabs
+            groupId="menu-category"
+            ariaLabel="Categorias do cardápio"
+            options={CATEGORY_OPTIONS}
+            value={category}
+            onChange={setCategory}
+          />
         </div>
       )}
 
@@ -66,10 +60,19 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
           <motion.button
             key={product.id}
             layout
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onSelect(product)}
-            className="flex flex-col items-start gap-1 rounded-xl border border-border bg-surface px-3.5 py-3 text-left transition-colors hover:border-gold-500/50 hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+            transition={{ duration: 0.18 }}
+            onClick={() => {
+              onSelect(product)
+              if (product.pricingType === 'fixed') {
+                setJustAdded(product.id)
+                window.setTimeout(() => setJustAdded((id) => (id === product.id ? null : id)), 650)
+              }
+            }}
+            className="relative flex flex-col items-start gap-1 overflow-hidden rounded-xl border border-border bg-surface px-3.5 py-3 text-left transition-colors hover:border-gold-500/50 hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
           >
             <span className="text-sm font-semibold text-cream">{product.name}</span>
             {product.description && (
@@ -78,6 +81,19 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
             <span className="mt-1 text-xs font-medium text-gold-400">
               {productPriceLabel(product, pizzaPricing)}
             </span>
+            <AnimatePresence>
+              {justAdded === product.id && (
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.7, transition: { duration: 0.15 } }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 22 }}
+                  className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-gold-500 text-[#1a1310]"
+                >
+                  <Check size={13} strokeWidth={3} />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </motion.button>
         ))}
         {filtered.length === 0 && (
