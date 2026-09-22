@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Base surfaces — warm near-black, matching the wood-fired oven logo */
+  --color-bg: #131010;
+  --color-bg-soft: #1a1512;
+  --color-surface: #1e1815;
+  --color-surface-raised: #261f1a;
+  --color-surface-hover: #2d251f;
+  --color-border: #382e25;
+  --color-border-strong: #4a3c2e;
+
+  /* Gold — pulled from the logo mark */
+  --color-gold-100: #f6e9c9;
+  --color-gold-200: #ecd39d;
+  --color-gold-300: #ddba79;
+  --color-gold-400: #cba25e;
+  --color-gold-500: #c9a15b;
+  --color-gold-600: #ab8143;
+  --color-gold-700: #866434;
+  --color-gold-800: #5c4526;
+  --color-gold-900: #382c1d;
+
+  /* Ember — the flame inside the oven, used as a live/urgent accent */
+  --color-ember-300: #f0a878;
+  --color-ember-400: #e6824c;
+  --color-ember-500: #d9622b;
+  --color-ember-600: #b84c1e;
+  --color-ember-700: #8f3a18;
+
+  /* Text */
+  --color-cream: #f5ecd9;
+  --color-cream-dim: #d9cbb2;
+  --color-muted: #a3927c;
+  --color-muted-dim: #786b5a;
+
+  /* Status semantics — distinct from brand gold/ember so state is never ambiguous */
+  --color-status-new: #5b9bd9;
+  --color-status-new-bg: #182430;
+  --color-status-printed: #4caf6d;
+  --color-status-printed-bg: #16261c;
+  --color-status-error: #e2544a;
+  --color-status-error-bg: #2c1815;
+  --color-status-done: #8b7cd8;
+  --color-status-done-bg: #1f1c30;
+  --color-status-cancelled: #6b5f52;
+  --color-status-cancelled-bg: #221d18;
+
+  --animate-flicker: flicker 3.2s ease-in-out infinite;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 6px rgba(217, 98, 43, 0.35)); }
+  50% { opacity: 0.85; filter: drop-shadow(0 0 10px rgba(217, 98, 43, 0.55)); }
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold-500);
+  color: var(--color-bg);
+}
+
+/* Thin warm scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+
+/* ---- Print system ----
+   The printable receipt is always in the DOM (off-screen) so we never depend
+   on popups. On screen it's invisible; on print, everything else is hidden. */
+.print-area {
+  display: none;
+}
+
+@media print {
+  html, body {
+    background: #fff !important;
+  }
+  body > #root > *:not(.print-root) {
+    display: none !important;
+  }
+  .print-root {
+    display: block !important;
+  }
+  .print-area {
+    display: block !important;
+    color: #000;
+  }
+}
