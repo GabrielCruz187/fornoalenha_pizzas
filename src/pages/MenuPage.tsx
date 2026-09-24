@@ -52,9 +52,9 @@ export function MenuPage() {
         {grouped.map(({ category, items }, sectionIdx) => (
           <motion.section
             key={category}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: Math.min(sectionIdx, 5) * 0.05, duration: 0.25 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: Math.min(sectionIdx, 5) * 0.05, duration: 0.2 }}
           >
             <h2 className="mb-2 font-display text-base font-semibold text-cream">{CATEGORY_LABELS[category]}</h2>
             <div className="overflow-hidden rounded-xl border border-border">
@@ -62,12 +62,12 @@ export function MenuPage() {
                 <div
                   key={product.id}
                   className={cn(
-                    'flex items-center justify-between gap-3 bg-surface px-4 py-3 transition-colors hover:bg-surface-hover',
+                    'flex flex-wrap items-center justify-between gap-3 bg-surface px-4 py-3 transition-colors hover:bg-surface-hover',
                     idx !== items.length - 1 && 'border-b border-border',
                     !product.active && 'opacity-50',
                   )}
                 >
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 basis-full sm:basis-auto">
                     <p className="text-sm font-medium text-cream">{product.name}</p>
                     {product.description && (
                       <p className="truncate text-xs text-muted">{product.description}</p>

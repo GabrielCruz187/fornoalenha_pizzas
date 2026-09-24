@@ -65,18 +65,18 @@ export function DashboardPage() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
           className="rounded-xl border border-border bg-surface p-4"
         >
           <h2 className="mb-3 text-sm font-semibold text-cream">Faturamento por forma de pagamento</h2>
           <PaymentBreakdownChart data={paymentData} />
         </motion.div>
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.15 }}
           className="rounded-xl border border-border bg-surface p-4"
         >
           <h2 className="mb-3 text-sm font-semibold text-cream">Produtos mais pedidos</h2>
@@ -85,9 +85,9 @@ export function DashboardPage() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
         className="mt-4 rounded-xl border border-border bg-surface p-4"
       >
         <h2 className="mb-3 text-sm font-semibold text-cream">Pedidos por dia</h2>

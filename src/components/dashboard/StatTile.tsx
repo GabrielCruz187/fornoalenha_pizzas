@@ -16,9 +16,9 @@ export function StatTile({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0.2 }}
       whileHover={{ y: -2 }}
       className="rounded-xl border border-border bg-surface p-4 transition-colors hover:border-gold-500/40"
     >

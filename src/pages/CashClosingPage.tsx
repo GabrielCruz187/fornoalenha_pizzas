@@ -53,7 +53,7 @@ export function CashClosingPage() {
         title="Fechamento de Caixa"
         subtitle="Resumo do dia para conferência"
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <input
               type="date"
               value={dateValue}

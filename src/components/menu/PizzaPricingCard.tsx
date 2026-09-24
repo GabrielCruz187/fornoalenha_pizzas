@@ -30,9 +30,9 @@ export function PizzaPricingCard() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
       className="mb-6 rounded-xl border border-gold-700/40 bg-surface-raised p-4"
     >
       <div className="mb-3 flex items-center gap-2">
