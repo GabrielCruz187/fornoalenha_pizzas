@@ -1,3 +1,4 @@
+import { MotionConfig } from 'framer-motion'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { ThemeEffect } from './components/layout/ThemeEffect'
@@ -11,7 +12,7 @@ import { CashClosingPage } from './pages/CashClosingPage'
 
 function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <ThemeEffect />
       <PrintPortal />
       <HashRouter>
@@ -26,7 +27,7 @@ function App() {
         </Routes>
       </HashRouter>
       <ToastViewport />
-    </>
+    </MotionConfig>
   )
 }
 

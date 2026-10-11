@@ -21,10 +21,10 @@ export function AppShell() {
           <AnimatePresence>
             <motion.div
               key={location.pathname}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 14, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               className="mx-auto max-w-6xl px-4 py-4 sm:px-6 sm:py-6"
             >
               <RouteErrorBoundary routeKey={location.pathname}>

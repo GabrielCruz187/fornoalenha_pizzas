@@ -7,6 +7,8 @@ import { useOrdersStore } from '../store/useOrdersStore'
 import { usePrintStore } from '../store/usePrintStore'
 import { computeKpis, computePaymentBreakdown, type CashClosingData } from '../lib/dashboardStats'
 import { formatCurrency } from '../lib/format'
+
+const formatInt = (n: number) => String(Math.round(n))
 import { useChartPalette } from '../lib/chartColors'
 
 function todayInputValue() {
@@ -71,10 +73,10 @@ export function CashClosingPage() {
       <p className="mb-4 text-sm capitalize text-muted">{dateLabel}</p>
 
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatTile label="Pedidos válidos" value={String(kpis.totalOrders)} icon={Receipt} delay={0} />
-        <StatTile label="Faturamento" value={formatCurrency(kpis.revenue)} icon={DollarSign} delay={0.05} />
-        <StatTile label="Ticket médio" value={formatCurrency(kpis.averageTicket)} icon={Receipt} delay={0.1} />
-        <StatTile label="Cancelados" value={String(kpis.cancelled)} icon={XCircle} delay={0.15} />
+        <StatTile label="Pedidos válidos" amount={kpis.totalOrders} format={formatInt} icon={Receipt} delay={0} />
+        <StatTile label="Faturamento" amount={kpis.revenue} format={formatCurrency} icon={DollarSign} delay={0.05} />
+        <StatTile label="Ticket médio" amount={kpis.averageTicket} format={formatCurrency} icon={Receipt} delay={0.1} />
+        <StatTile label="Cancelados" amount={kpis.cancelled} format={formatInt} icon={XCircle} delay={0.15} />
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-border">

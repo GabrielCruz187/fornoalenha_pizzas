@@ -12,6 +12,8 @@ import { matchesDateFilter, type DateFilter } from '../lib/orderFilters'
 import { computeKpis, computeOrdersPerDay, computePaymentBreakdown, computeTopProducts } from '../lib/dashboardStats'
 import { formatCurrency } from '../lib/format'
 
+const formatInt = (n: number) => String(Math.round(n))
+
 const PERIOD_OPTIONS: { value: DateFilter; label: string; days: number }[] = [
   { value: 'hoje', label: 'Hoje', days: 1 },
   { value: '7dias', label: '7 dias', days: 7 },
@@ -49,12 +51,13 @@ export function DashboardPage() {
 
       <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
-          { label: 'Pedidos', value: String(kpis.totalOrders), icon: ShoppingBag },
-          { label: 'Faturamento', value: formatCurrency(kpis.revenue), icon: DollarSign },
-          { label: 'Ticket médio', value: formatCurrency(kpis.averageTicket), icon: Receipt },
+          { label: 'Pedidos', amount: kpis.totalOrders, format: formatInt, icon: ShoppingBag },
+          { label: 'Faturamento', amount: kpis.revenue, format: formatCurrency, icon: DollarSign },
+          { label: 'Ticket médio', amount: kpis.averageTicket, format: formatCurrency, icon: Receipt },
           {
             label: 'Cancelados',
-            value: String(kpis.cancelled),
+            amount: kpis.cancelled,
+            format: formatInt,
             icon: XCircle,
             sub: kpis.cancelled > 0 ? 'não contam no faturamento' : undefined,
           },

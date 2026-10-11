@@ -56,15 +56,15 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
       )}
 
       <div className="grid flex-1 auto-rows-min grid-cols-1 gap-2 overflow-y-auto pb-2 sm:grid-cols-2 xl:grid-cols-3">
-        {filtered.map((product) => (
+        {filtered.map((product, i) => (
           <motion.button
             key={product.id}
             layout
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.18 }}
+            initial={{ opacity: 0, y: 14, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            whileHover={{ y: -4, scale: 1.02 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 26, delay: Math.min(i, 12) * 0.03 }}
             onClick={() => {
               onSelect(product)
               if (product.pricingType === 'fixed') {

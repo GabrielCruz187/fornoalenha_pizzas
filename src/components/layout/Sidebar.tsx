@@ -3,6 +3,7 @@ import { LayoutDashboard, ClipboardList, BookOpen, Wallet, ChefHat, X } from 'lu
 import { NavLink } from 'react-router-dom'
 import { cn } from '../../lib/cn'
 import logo from '../../assets/logo.jpg'
+import { Embers } from './Embers'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Novo Pedido', icon: ChefHat, end: true },
@@ -48,8 +49,11 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
           >
             <X size={18} />
           </button>
+          <Embers />
           <motion.div
-            whileHover={{ scale: 1.05, rotate: 2 }}
+            initial={{ opacity: 0, scale: 0.7, rotate: -8 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            whileHover={{ scale: 1.08, rotate: 4 }}
             transition={{ type: 'spring', stiffness: 300, damping: 18 }}
             className="relative"
           >
@@ -67,9 +71,14 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
         </div>
 
         <nav className="flex-1 space-y-1 px-3 py-4" aria-label="Navegação principal">
-          {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
-            <NavLink
+          {NAV_ITEMS.map(({ to, label, icon: Icon, end }, i) => (
+            <motion.div
               key={to}
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + i * 0.06, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
+            <NavLink
               to={to}
               end={end}
               onClick={onClose}
@@ -89,13 +98,20 @@ export function Sidebar({ mobileOpen, onClose }: SidebarProps) {
                       transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                     />
                   )}
-                  <span className="relative z-10 flex shrink-0">
+                  <motion.span
+                    className="relative z-10 flex shrink-0"
+                    whileHover={{ scale: 1.2, rotate: -8 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 14 }}
+                  >
                     <Icon size={17} strokeWidth={1.8} />
+                  </motion.span>
+                  <span className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5">
+                    {label}
                   </span>
-                  <span className="relative z-10">{label}</span>
                 </>
               )}
             </NavLink>
+            </motion.div>
           ))}
         </nav>
 

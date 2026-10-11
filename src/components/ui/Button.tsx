@@ -13,7 +13,7 @@ interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary: 'bg-gold-500 text-[#1a1310] hover:bg-gold-400 ring-1 ring-gold-500/40 disabled:hover:bg-gold-500',
+  primary: 'btn-shine bg-gold-500 text-[#1a1310] hover:bg-gold-400 ring-1 ring-gold-500/40 disabled:hover:bg-gold-500',
   secondary:
     'bg-surface-raised text-cream border border-border-strong hover:border-gold-500/60 hover:bg-surface-hover',
   ghost: 'bg-transparent text-cream-dim hover:bg-surface-hover hover:text-cream',
@@ -31,7 +31,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <motion.button
         ref={ref}
-        whileTap={disabled ? undefined : { scale: 0.97 }}
+        whileHover={disabled ? undefined : { y: -1 }}
+        whileTap={disabled ? undefined : { scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 25 }}
         disabled={disabled}
         className={cn(
           'inline-flex items-center justify-center rounded-lg font-medium transition-colors duration-150',
