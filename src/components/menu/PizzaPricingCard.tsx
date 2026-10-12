@@ -47,7 +47,7 @@ export function PizzaPricingCard() {
         <TextField label="Borda" inputMode="decimal" value={draft.borda} onChange={(e) => setDraft((d) => ({ ...d, borda: e.target.value }))} />
       </div>
       <Button size="sm" className="mt-3" onClick={handleSave}>
-        Salvar preços
+        Salvar preços?
       </Button>
     </motion.div>
   )
