@@ -39,7 +39,7 @@ export function PizzaPricingCard() {
         <Pizza size={16} className="text-gold-400" />
         <h2 className="text-sm font-semibold text-cream">Tabela de preços das pizzas</h2>
       </div>
-      <p className="mb-3 text-xs text-muted">Vale para todos os sabores de pizzas salgadas e doces.</p>
+      <p className="mb-3 text-xs text-muted">Vale para todos os sabores de pizzas salgadas e doces</p>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <TextField label="Pequena" inputMode="decimal" value={draft.pequena} onChange={(e) => setDraft((d) => ({ ...d, pequena: e.target.value }))} />
         <TextField label="Média" inputMode="decimal" value={draft.media} onChange={(e) => setDraft((d) => ({ ...d, media: e.target.value }))} />
@@ -47,7 +47,7 @@ export function PizzaPricingCard() {
         <TextField label="Borda" inputMode="decimal" value={draft.borda} onChange={(e) => setDraft((d) => ({ ...d, borda: e.target.value }))} />
       </div>
       <Button size="sm" className="mt-3" onClick={handleSave}>
-        Salvar preços?
+        Salvar preços
       </Button>
     </motion.div>
   )
