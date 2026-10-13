@@ -114,7 +114,7 @@ export function OrderDetailDrawer({ order, onClose }: OrderDetailDrawerProps) {
           {canOperate && (
             <div className="flex flex-col gap-2 border-t border-border pt-4">
               <Button variant="secondary" icon={<Printer size={15} />} onClick={() => requestPrint(order)}>
-                Reimprimir comanda
+                {order.status === 'erro_impressao' ? 'Reimprimir (falha na impressora)' : 'Reimprimir comanda'}
               </Button>
               {order.status !== 'concluido' && (
                 <Button

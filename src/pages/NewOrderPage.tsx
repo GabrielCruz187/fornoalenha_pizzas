@@ -202,7 +202,7 @@ export function NewOrderPage() {
               disabled={!canSubmit}
               onClick={handleConfirm}
             >
-              Confirmar e Imprimir
+              Confirmar e Ver Prévia
             </Button>
           </div>
         </div>

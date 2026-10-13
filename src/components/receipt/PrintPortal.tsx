@@ -3,7 +3,7 @@ import { usePrintStore } from '../../store/usePrintStore'
 import { useOrdersStore } from '../../store/useOrdersStore'
 import { useToastStore } from '../../store/useToastStore'
 import { orderNumberLabel } from '../../lib/format'
-import { ThermalReceipt } from './ThermalReceipt'
+import { KitchenTicket } from './KitchenTicket'
 import { CashClosingReport } from './CashClosingReport'
 
 const PAGE_STYLE_ID = 'dynamic-print-page-style'
@@ -51,7 +51,7 @@ export function PrintPortal() {
         push({
           variant: 'success',
           message: `Pedido ${orderNumberLabel(order.number)} enviado para impressão`,
-          description: 'Confira a comanda na impressora da cozinha.',
+          description: 'Se não saiu, use Reimprimir no histórico de pedidos.',
         })
       } else {
         push({ variant: 'success', message: 'Fechamento de caixa enviado para impressão' })
@@ -70,7 +70,7 @@ export function PrintPortal() {
   return (
     <div className="print-root">
       <div className="print-area">
-        {job?.type === 'receipt' && <ThermalReceipt order={job.order} />}
+        {job?.type === 'receipt' && <KitchenTicket order={job.order} />}
         {job?.type === 'cashClosing' && <CashClosingReport data={job.data} />}
       </div>
     </div>

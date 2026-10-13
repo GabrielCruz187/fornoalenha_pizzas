@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { ThemeEffect } from './components/layout/ThemeEffect'
 import { PrintPortal } from './components/receipt/PrintPortal'
+import { PrintPreviewModal } from './components/receipt/PrintPreviewModal'
 import { ToastViewport } from './components/ui/ToastViewport'
 import { NewOrderPage } from './pages/NewOrderPage'
 import { OrdersHistoryPage } from './pages/OrdersHistoryPage'
@@ -15,6 +16,7 @@ function App() {
     <MotionConfig reducedMotion="user">
       <ThemeEffect />
       <PrintPortal />
+      <PrintPreviewModal />
       <HashRouter>
         <Routes>
           <Route element={<AppShell />}>
