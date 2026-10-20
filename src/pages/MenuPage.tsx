@@ -41,7 +41,7 @@ export function MenuPage() {
               setFormOpen(true)
             }}
           >
-            Novo item;
+          Adicionar novo item
           </Button>
         }
       />
