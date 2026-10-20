@@ -63,7 +63,7 @@ export function CashClosingReport({ data }: { data: CashClosingData }) {
           Conferido por
         </div>
         <div style={{ flex: 1, borderTop: '1px solid #000', paddingTop: 6, fontSize: 11, textAlign: 'center' }}>
-          Data / Hora
+          Data e Hora
         </div>
       </div>
     </div>
