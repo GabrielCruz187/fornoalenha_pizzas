@@ -111,9 +111,9 @@ export function OrdersHistoryPage() {
               {filtered.map((order, i) => (
                 <motion.tr
                   key={order.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: Math.min(i, 8) * 0.02 }}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: Math.min(i, 8) * 0.04, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                   className="cursor-pointer border-b border-border bg-surface last:border-0 hover:bg-surface-hover"
                   onClick={() => setSelectedId(order.id)}
                 >

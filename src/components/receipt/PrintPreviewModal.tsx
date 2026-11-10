@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { Printer, RotateCcw } from 'lucide-react'
 import { Modal } from '../ui/Modal'
 import { Button } from '../ui/Button'
@@ -38,9 +39,16 @@ export function PrintPreviewModal() {
     >
       {order && (
         <div className="flex justify-center">
-          <div className="overflow-hidden rounded-md shadow-lg ring-1 ring-black/20">
+          {/* Ticket "feeds out" of the printer: revealed top-to-bottom while sliding down */}
+          <motion.div
+            key={order.id + order.printCount}
+            initial={{ clipPath: 'inset(0 0 100% 0)', y: -24 }}
+            animate={{ clipPath: 'inset(0 0 0% 0)', y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            className="rounded-md shadow-lg ring-1 ring-black/20"
+          >
             <KitchenTicket order={order} />
-          </div>
+          </motion.div>
         </div>
       )}
     </Modal>

@@ -23,7 +23,12 @@ export function StatTile({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay, type: 'spring', stiffness: 260, damping: 22 }}
       whileHover={{ y: -4, scale: 1.02 }}
-      className="group rounded-xl border border-border bg-surface p-4 transition-colors hover:border-gold-500/50"
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect()
+        e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`)
+        e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`)
+      }}
+      className="spotlight group rounded-xl border border-border bg-surface p-4 transition-colors hover:border-gold-500/50"
     >
       <div className="mb-2 flex items-center justify-between">
         <span className="text-xs font-medium uppercase tracking-wide text-muted">{label}</span>

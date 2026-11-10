@@ -97,7 +97,37 @@
   animation: glow-pulse 3.6s ease-in-out infinite;
 }
 
+/* Soft gold spotlight that follows the cursor (--mx/--my set from JS) */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), rgba(201, 161, 91, 0.16), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* Toast countdown bar */
+@keyframes toast-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+.toast-countdown {
+  transform-origin: left;
+  animation: toast-countdown 4.2s linear forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .toast-countdown { animation: none; }
+  .spotlight::before { transition: none; }
   .ember-particle, .glow-pulse, .animate-flicker { animation: none; }
   .btn-shine:hover::after { transition: none; }
 }

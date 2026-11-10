@@ -42,10 +42,10 @@ export function Modal({ open, onClose, title, description, children, footer, max
             role="dialog"
             aria-modal="true"
             aria-labelledby="modal-title"
-            initial={{ opacity: 0, scale: 0.95, y: 12 }}
+            initial={{ opacity: 0, scale: 0.92, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 8 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            exit={{ opacity: 0, scale: 0.96, y: 8, transition: { duration: 0.15 } }}
+            transition={{ type: 'spring', stiffness: 380, damping: 28 }}
             className={cn(
               'relative w-full rounded-2xl border border-border-strong bg-surface shadow-2xl',
               'max-h-[90vh] flex flex-col',

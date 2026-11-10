@@ -28,7 +28,7 @@ export function ToastViewport() {
               exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
-                'pointer-events-auto flex items-start gap-2.5 rounded-xl border bg-surface-raised px-4 py-3 shadow-xl',
+                'pointer-events-auto relative flex items-start gap-2.5 overflow-hidden rounded-xl border bg-surface-raised px-4 py-3 shadow-xl',
                 style.border,
               )}
             >
@@ -44,6 +44,10 @@ export function ToastViewport() {
               >
                 <X size={15} />
               </button>
+              <span
+                aria-hidden
+                className={cn('toast-countdown absolute inset-x-0 bottom-0 h-0.5 bg-current', style.text)}
+              />
             </motion.div>
           )
         })}
