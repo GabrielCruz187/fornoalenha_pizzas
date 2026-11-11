@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Ban, CheckCircle2, Printer } from 'lucide-react'
+import { Ban, CheckCircle2, MessageCircle, Printer } from 'lucide-react'
 import { Drawer } from '../ui/Drawer'
 import { Button } from '../ui/Button'
 import { StatusBadge } from '../ui/StatusBadge'
@@ -8,6 +8,7 @@ import { formatCurrency, formatDateTime, orderNumberLabel } from '../../lib/form
 import { PAYMENT_LABELS, PIZZA_SIZE_LABELS, type Order } from '../../types'
 import { useOrdersStore } from '../../store/useOrdersStore'
 import { usePrintStore } from '../../store/usePrintStore'
+import { whatsappUrl } from '../../lib/whatsapp'
 
 interface OrderDetailDrawerProps {
   order: Order | null
@@ -24,6 +25,8 @@ export function OrderDetailDrawer({ order, onClose }: OrderDetailDrawerProps) {
   if (!order) return null
 
   const canOperate = order.status !== 'cancelado'
+  const confirmUrl = whatsappUrl(order, 'confirmacao')
+  const readyUrl = whatsappUrl(order, 'pronto')
 
   return (
     <>
@@ -113,6 +116,27 @@ export function OrderDetailDrawer({ order, onClose }: OrderDetailDrawerProps) {
 
           {canOperate && (
             <div className="flex flex-col gap-2 border-t border-border pt-4">
+              {order.customerPhone && (
+                <div className="flex flex-col gap-2 rounded-lg border border-border bg-bg-soft p-3">
+                  <span className="text-xs font-medium uppercase tracking-wide text-muted">WhatsApp do cliente</span>
+                  {confirmUrl && readyUrl ? (
+                    <div className="flex gap-2">
+                      <a href={confirmUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                        <Button variant="secondary" size="sm" className="w-full" icon={<MessageCircle size={14} />}>
+                          Confirmar pedido
+                        </Button>
+                      </a>
+                      <a href={readyUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                        <Button variant="secondary" size="sm" className="w-full" icon={<MessageCircle size={14} />}>
+                          {order.deliveryType === 'entrega' ? 'Saiu para entrega' : 'Pronto p/ retirada'}
+                        </Button>
+                      </a>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-muted">Telefone inválido. Use DDD + número (ex.: 11 91234-5678).</p>
+                  )}
+                </div>
+              )}
               <Button variant="secondary" icon={<Printer size={15} />} onClick={() => requestPrint(order)}>
                 {order.status === 'erro_impressao' ? 'Reimprimir (falha na impressora)' : 'Reimprimir comanda'}
               </Button>
