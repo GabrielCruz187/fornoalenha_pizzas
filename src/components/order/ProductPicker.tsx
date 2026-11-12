@@ -5,10 +5,13 @@ import { CATEGORY_LABELS, CATEGORY_ORDER, type Product, type ProductCategory } f
 import { productPriceLabel } from '../../lib/priceLabel'
 import { ChipTabs } from '../ui/ChipTabs'
 import { AnimatePresence, motion } from 'framer-motion'
+import { cn } from '../../lib/cn'
 
 interface ProductPickerProps {
   onSelect: (product: Product) => void
 }
+
+export const PRODUCT_SEARCH_ID = 'product-search'
 
 const CATEGORY_OPTIONS = CATEGORY_ORDER.map((cat) => ({ value: cat, label: CATEGORY_LABELS[cat] }))
 
@@ -35,9 +38,20 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
       <div className="relative mb-3">
         <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
         <input
+          id={PRODUCT_SEARCH_ID}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar item do cardápio…"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setQuery('')
+            if (e.key === 'Enter') {
+              const first = filtered.find((p) => !p.soldOut)
+              if (first) {
+                onSelect(first)
+                setQuery('')
+              }
+            }
+          }}
+          placeholder="Buscar item… (/ para focar, Enter adiciona o primeiro)"
           aria-label="Buscar item do cardápio"
           className="w-full rounded-lg border border-border bg-bg-soft py-2.5 pl-9 pr-3 text-sm text-cream placeholder:text-muted-dim focus:border-gold-500/70 focus:outline-none focus:ring-1 focus:ring-gold-500/40"
         />
@@ -62,9 +76,10 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
             layout
             initial={{ opacity: 0, y: 14, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            whileHover={{ y: -4, scale: 1.02 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={product.soldOut ? undefined : { y: -4, scale: 1.02 }}
+            whileTap={product.soldOut ? undefined : { scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 380, damping: 26, delay: Math.min(i, 12) * 0.03 }}
+            disabled={product.soldOut}
             onClick={() => {
               onSelect(product)
               if (product.pricingType === 'fixed') {
@@ -72,7 +87,12 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
                 window.setTimeout(() => setJustAdded((id) => (id === product.id ? null : id)), 650)
               }
             }}
-            className="relative flex flex-col items-start gap-1 overflow-hidden rounded-xl border border-border bg-surface px-3.5 py-3 text-left transition-colors hover:border-gold-500/50 hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400"
+            className={cn(
+              'relative flex flex-col items-start gap-1 overflow-hidden rounded-xl border border-border bg-surface px-3.5 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400',
+              product.soldOut
+                ? 'cursor-not-allowed opacity-50 grayscale'
+                : 'hover:border-gold-500/50 hover:bg-surface-hover',
+            )}
           >
             <span className="text-sm font-semibold text-cream">{product.name}</span>
             {product.description && (
@@ -81,6 +101,11 @@ export function ProductPicker({ onSelect }: ProductPickerProps) {
             <span className="mt-1 text-xs font-medium text-gold-400">
               {productPriceLabel(product, pizzaPricing)}
             </span>
+            {product.soldOut && (
+              <span className="absolute right-2 top-2 rounded-full bg-status-error-bg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-status-error">
+                Esgotado
+              </span>
+            )}
             <AnimatePresence>
               {justAdded === product.id && (
                 <motion.span

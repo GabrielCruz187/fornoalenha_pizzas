@@ -1,6 +1,6 @@
 import { Printer } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { type ReactNode, useMemo, useState } from 'react'
+import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import { PageHeader } from '../components/layout/PageHeader'
 import { ProductPicker } from '../components/order/ProductPicker'
 import { PizzaConfigModal } from '../components/order/PizzaConfigModal'
@@ -116,6 +116,18 @@ export function NewOrderPage() {
     resetForm()
   }
 
+  // Ctrl+Enter confirms the order, unless a dialog (config modal, preview...) is open.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Enter' || !(e.ctrlKey || e.metaKey)) return
+      if (document.querySelector('[role="dialog"]')) return
+      e.preventDefault()
+      handleConfirm()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
   return (
     <div>
       <PageHeader title="Novo Pedido" subtitle="Lançamento rápido para a cozinha" />
@@ -203,6 +215,7 @@ export function NewOrderPage() {
               onClick={handleConfirm}
             >
               Confirmar e Ver Prévia
+              <kbd className="ml-1 hidden rounded border border-black/25 px-1.5 text-[10px] font-normal sm:inline">Ctrl+Enter</kbd>
             </Button>
           </div>
         </div>

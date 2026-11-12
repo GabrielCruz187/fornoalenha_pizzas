@@ -41,6 +41,8 @@ export interface Product {
   price?: number
   variants?: ProductVariant[]
   active: boolean
+  /** Temporarily out of stock: still listed, but can't be added to an order. */
+  soldOut?: boolean
 }
 
 export type PizzaSize = 'pequena' | 'media' | 'grande'

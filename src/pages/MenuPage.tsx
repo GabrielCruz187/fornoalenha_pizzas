@@ -15,6 +15,7 @@ export function MenuPage() {
   const products = useProductsStore((s) => s.products)
   const pizzaPricing = useProductsStore((s) => s.pizzaPricing)
   const toggleActive = useProductsStore((s) => s.toggleActive)
+  const toggleSoldOut = useProductsStore((s) => s.toggleSoldOut)
   const removeProduct = useProductsStore((s) => s.removeProduct)
 
   const [formOpen, setFormOpen] = useState(false)
@@ -68,7 +69,14 @@ export function MenuPage() {
                   )}
                 >
                   <div className="min-w-0 flex-1 basis-full sm:basis-auto">
-                    <p className="text-sm font-medium text-cream">{product.name}</p>
+                    <p className="flex items-center gap-2 text-sm font-medium text-cream">
+                      {product.name}
+                      {product.soldOut && (
+                        <span className="rounded-full bg-status-error-bg px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-status-error">
+                          Esgotado
+                        </span>
+                      )}
+                    </p>
                     {product.description && (
                       <p className="truncate text-xs text-muted">{product.description}</p>
                     )}
@@ -76,6 +84,15 @@ export function MenuPage() {
                   <span className="shrink-0 text-sm font-medium text-gold-400">
                     {productPriceLabel(product, pizzaPricing)}
                   </span>
+                  <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted">
+                    <input
+                      type="checkbox"
+                      checked={!!product.soldOut}
+                      onChange={() => toggleSoldOut(product.id)}
+                      className="h-3.5 w-3.5 accent-status-error"
+                    />
+                    Esgotado
+                  </label>
                   <label className="flex shrink-0 items-center gap-1.5 text-xs text-muted">
                     <input
                       type="checkbox"

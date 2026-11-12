@@ -29,7 +29,7 @@ export function PizzaConfigModal({ product, onClose, onConfirm }: PizzaConfigMod
   const [notes, setNotes] = useState('')
 
   const otherFlavors = useMemo(
-    () => products.filter((p) => p.active && p.category === product?.category && p.id !== product?.id),
+    () => products.filter((p) => p.active && !p.soldOut && p.category === product?.category && p.id !== product?.id),
     [products, product],
   )
 

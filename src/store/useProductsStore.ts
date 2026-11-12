@@ -10,6 +10,7 @@ interface ProductsState {
   addProduct: (input: Omit<Product, 'id'>) => void
   updateProduct: (id: string, patch: Partial<Omit<Product, 'id'>>) => void
   toggleActive: (id: string) => void
+  toggleSoldOut: (id: string) => void
   removeProduct: (id: string) => void
   updatePizzaPricing: (patch: Partial<PizzaSizePricing>) => void
 }
@@ -28,6 +29,10 @@ export const useProductsStore = create<ProductsState>()(
       toggleActive: (id) =>
         set((state) => ({
           products: state.products.map((p) => (p.id === id ? { ...p, active: !p.active } : p)),
+        })),
+      toggleSoldOut: (id) =>
+        set((state) => ({
+          products: state.products.map((p) => (p.id === id ? { ...p, soldOut: !p.soldOut } : p)),
         })),
       removeProduct: (id) =>
         set((state) => ({ products: state.products.filter((p) => p.id !== id) })),

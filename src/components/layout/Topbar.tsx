@@ -1,4 +1,4 @@
-import { Flame, Menu } from 'lucide-react'
+import { Flame, Keyboard, Menu } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useOrdersStore } from '../../store/useOrdersStore'
 import { isSameDay } from '../../lib/format'
@@ -6,9 +6,10 @@ import { ThemeToggle } from './ThemeToggle'
 
 interface TopbarProps {
   onMenuClick: () => void
+  onShortcutsClick: () => void
 }
 
-export function Topbar({ onMenuClick }: TopbarProps) {
+export function Topbar({ onMenuClick, onShortcutsClick }: TopbarProps) {
   const [now, setNow] = useState(new Date())
   const orders = useOrdersStore((s) => s.orders)
 
@@ -49,6 +50,14 @@ export function Topbar({ onMenuClick }: TopbarProps) {
             {now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' })}
           </div>
         </div>
+        <button
+          onClick={onShortcutsClick}
+          aria-label="Atalhos de teclado"
+          title="Atalhos de teclado (?)"
+          className="hidden h-9 w-9 items-center justify-center rounded-full border border-border-strong bg-surface-raised text-cream-dim transition-colors hover:text-gold-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 sm:flex"
+        >
+          <Keyboard size={16} />
+        </button>
         <ThemeToggle />
       </div>
     </header>

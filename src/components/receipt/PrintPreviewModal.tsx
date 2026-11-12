@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { Printer, RotateCcw } from 'lucide-react'
 import { Modal } from '../ui/Modal'
 import { Button } from '../ui/Button'
@@ -13,6 +14,18 @@ export function PrintPreviewModal() {
   const closePreview = usePrintStore((s) => s.closePreview)
   // Read the live order so the reprint label reflects the latest print count.
   const order = useOrdersStore((s) => s.orders.find((o) => o.id === preview?.id)) ?? preview
+
+  useEffect(() => {
+    if (!preview) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault()
+        confirmPrint()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [preview, confirmPrint])
 
   const isReprint = !!order && (order.printCount > 0 || order.status === 'erro_impressao')
 
