@@ -1,6 +1,8 @@
-import { Bike, Store } from 'lucide-react'
+import { Bike, Store, UserCheck } from 'lucide-react'
 import { TextField } from '../ui/FormControls'
 import { cn } from '../../lib/cn'
+import { formatCurrency, formatDate } from '../../lib/format'
+import type { KnownCustomer } from '../../lib/customers'
 import type { DeliveryType } from '../../types'
 
 interface CustomerFieldsProps {
@@ -8,6 +10,7 @@ interface CustomerFieldsProps {
   onCustomerNameChange: (v: string) => void
   customerPhone: string
   onCustomerPhoneChange: (v: string) => void
+  knownCustomer: KnownCustomer | null
   deliveryType: DeliveryType
   onDeliveryTypeChange: (v: DeliveryType) => void
   address: string
@@ -23,6 +26,7 @@ export function CustomerFields({
   onCustomerNameChange,
   customerPhone,
   onCustomerPhoneChange,
+  knownCustomer,
   deliveryType,
   onDeliveryTypeChange,
   address,
@@ -69,6 +73,19 @@ export function CustomerFields({
         placeholder="(00) 00000-0000"
         inputMode="tel"
       />
+      {knownCustomer && (
+        <div
+          role="status"
+          className="-mt-1 flex items-start gap-2 rounded-lg border border-gold-700/40 bg-gold-900/30 px-3 py-2 text-xs text-cream-dim"
+        >
+          <UserCheck size={15} className="mt-0.5 shrink-0 text-gold-400" />
+          <span>
+            <strong className="text-cream">{knownCustomer.name}</strong> · {knownCustomer.orderCount}{' '}
+            {knownCustomer.orderCount === 1 ? 'pedido' : 'pedidos'} · ticket médio{' '}
+            {formatCurrency(knownCustomer.averageTicket)} · último em {formatDate(knownCustomer.lastOrderAt)}
+          </span>
+        </div>
+      )}
 
       {deliveryType === 'entrega' && (
         <>

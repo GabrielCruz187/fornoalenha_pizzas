@@ -11,6 +11,7 @@ import { PaymentFields } from '../components/order/PaymentFields'
 import { Button } from '../components/ui/Button'
 import { buildFixedItem } from '../lib/cart'
 import { parseMoney } from '../lib/parseMoney'
+import { findCustomerByPhone } from '../lib/customers'
 import { formatCurrency } from '../lib/format'
 import { useOrdersStore } from '../store/useOrdersStore'
 import { usePrintStore } from '../store/usePrintStore'
@@ -28,6 +29,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 export function NewOrderPage() {
   const createOrder = useOrdersStore((s) => s.createOrder)
+  const orders = useOrdersStore((s) => s.orders)
   const requestPrint = usePrintStore((s) => s.requestPrint)
   const pushToast = useToastStore((s) => s.push)
 
@@ -55,6 +57,18 @@ export function NewOrderPage() {
     () => customerName.trim().length > 0 && items.length > 0 && (deliveryType === 'retirada' || address.trim().length > 0),
     [customerName, items.length, deliveryType, address],
   )
+
+  const knownCustomer = useMemo(() => findCustomerByPhone(orders, customerPhone), [orders, customerPhone])
+
+  // Typing a known phone fills in the fields that are still empty (never overwrites what was typed).
+  const handlePhoneChange = (value: string) => {
+    setCustomerPhone(value)
+    const customer = findCustomerByPhone(orders, value)
+    if (!customer) return
+    if (!customerName.trim()) setCustomerName(customer.name)
+    if (!address.trim() && customer.address) setAddress(customer.address)
+    if (!addressReference.trim() && customer.addressReference) setAddressReference(customer.addressReference)
+  }
 
   const handleSelectProduct = (product: Product) => {
     if (product.pricingType === 'pizza') {
@@ -148,7 +162,8 @@ export function NewOrderPage() {
                 customerName={customerName}
                 onCustomerNameChange={setCustomerName}
                 customerPhone={customerPhone}
-                onCustomerPhoneChange={setCustomerPhone}
+                onCustomerPhoneChange={handlePhoneChange}
+                knownCustomer={knownCustomer}
                 deliveryType={deliveryType}
                 onDeliveryTypeChange={setDeliveryType}
                 address={address}
